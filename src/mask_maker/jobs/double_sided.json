@@ -1,0 +1,38 @@
+{
+    "Copper Etch Mask": 
+    {
+        "type": "folded" ,
+        "top": 
+        [
+            [["top" , "copper"] , "opaque"]
+        ] 
+        ,
+        "bottom": 
+        [
+            [["bottom" , "copper"] , "opaque"]
+        ]
+    }
+    ,
+    "Solder Mask Mask":
+    {
+        "type": "folded" ,
+        "top":
+        [
+            [["top" , "mask"] , "clear"]
+        ]
+        ,
+        "bottom":
+        [
+            [["bottom" , "mask"] , "clear"]
+        ]
+    }
+    ,
+    "Silkscreen Mask":
+    {
+        "type": "single" , 
+        "single":
+        [
+            [["top" , "silk"] , "opaque"]
+        ]
+    }
+}

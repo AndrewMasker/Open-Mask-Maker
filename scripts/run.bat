@@ -1,5 +1,5 @@
 @echo off
-REM Runs Open Mask Maker inside the projects environment. For Windows.
+REM Runs Open Mask Maker inside the project's environment. For Windows.
 
 REM Ensure no variable leakage
 setlocal
@@ -15,4 +15,4 @@ if errorlevel 1 (
 
 REM Run the mask-maker command defined in the pyproject.toml 
 uv run --project "%~dp0.." mask-maker %*
-exit /b *errorlevel*
+exit /b %errorlevel%

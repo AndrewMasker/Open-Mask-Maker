@@ -4,8 +4,8 @@
 ROOT="$(cd "$(dirname "$0")/.." && pwd)" # Gives an absolute path of the root of the project
 export PATH="$HOME/.local/bin:$PATH" # Adds the uv install folder to the run.sh process's PATH variable
 
-# Checks if uv is found and exits with and error if it isn't
-if ! command -v uv >dev/null 2>&1; then 
+# Checks if uv is found and exits with an error if it isn't
+if ! command -v uv >/dev/null 2>&1; then 
     echo "uv not found. Run install.cmd first" >&2
     exit 1
 fi

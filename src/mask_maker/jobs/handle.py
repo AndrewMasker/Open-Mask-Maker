@@ -6,7 +6,7 @@ from pathvalidate import is_valid_filename
 import tempfile
 import os
 
-JOB_EXTENSIONS = {"json" , "jsn" , "JSON" , "JSN"}
+JOB_EXTENSIONS = {"json" , "jsn"}
 
 def get_user_jobs_dir() -> Path:
     path = Path(user_config_dir("mask_maker" , appauthor=False)) / "jobs"
@@ -16,8 +16,8 @@ def get_user_jobs_dir() -> Path:
 def _load_dir(folder) -> dict[str , dict]:
     out = {}
     for f in folder.iterdir():
-        name , dot , ext = f.name.rartition(".")
-        if dot and ext in JOB_EXTENSIONS:
+        name , dot , ext = f.name.rpartition(".")
+        if dot and ext.lower() in JOB_EXTENSIONS:
             out[name] = json.loads(f.read_text(encoding="utf-8"))
     return out
 
@@ -36,16 +36,16 @@ def save_job(name: str , job: dict , overwrite: bool = False) -> Path:
         raise ValueError(f"Invalid name: {name!r}.")
 
     folder = get_user_jobs_dir()
-    path = folder / name / ".json"
+    path = folder / f"{name}.json"
 
-    existing = {f.name.rpartition(".")[0] for f in folder.iterdir() if f.name.rpartition(".")[2] in JOB_EXTENSIONS}
-    if name in {e.lower() for e in existing}:
-        if not overwrite:
-            raise FileExistsError(f"The name {name} already exists in {folder}. Names and extenstions are saved as lowercase.")
-        if overwrite:
-            name_idx = [e.lower() for e in existing].index(name)
-            file_name_to_del = existing[name_idx]
-
+    conflict_files = [
+        f for f in folder.iterdir()
+        if f.name.rpartition(".")[0].lower() == name
+        and f.name.rpartition(".")[2].lower() in JOB_EXTENSIONS
+    ]
+    if conflict_files and not overwrite:
+        raise FileExistsError(f"A job named {name} already exists in {folder}.")
+       
     text = json.dumps(job , indent=2)
     fd , tmp = tempfile.mkstemp(dir = folder , suffix = ".tmp")
     try:
@@ -55,4 +55,10 @@ def save_job(name: str , job: dict , overwrite: bool = False) -> Path:
     except BaseException:
         os.unlink(tmp)
         raise
+
+    # Catch the conflict files that made it through the replace.
+    for old in conflict_files:
+        if old.exists() and not os.path.samefile(old , path):
+            os.unlink(old)
+    
     return path

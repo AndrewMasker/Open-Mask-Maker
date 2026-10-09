@@ -2,7 +2,7 @@
 # This is the Unix-Like install script.
 
 set -e # Set this process to exit on errors
-cd "$(dirname "$0")" # cd to the directory containing this script
+cd "$(dirname "$0")/.." # cd to the parent directory of the one containing this script (root)
 export PATH="$HOME/.local/bin:$PATH" # Add the install path of uv to the install.sh process's PATH variable
 
 if ! command -v uv >/dev/null 2>&1; then # Check if the uv command is recognized. Install if not

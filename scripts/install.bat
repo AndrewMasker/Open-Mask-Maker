@@ -16,7 +16,7 @@ if errorlevel 1 (
     powershell -NoProfile -ExecutionPolicy Bypass -Command "irm https://astral.sh/uv/install.ps1 | iex"
 )
 
-uv sync || exit /b 1
+uv sync --locked || exit /b 1
 echo Install done.
 exit /b 0
 

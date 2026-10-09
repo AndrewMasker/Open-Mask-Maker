@@ -14,6 +14,6 @@ if ! command -v uv >/dev/null 2>&1; then # Check if the uv command is recognized
     fi
 fi
 
-uv sync
+uv sync --locked
 echo "Install done."
 exit 0

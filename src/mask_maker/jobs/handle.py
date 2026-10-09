@@ -32,7 +32,7 @@ def get_all_jobs() -> dict[str , dict]:
 
 def save_job(name: str , job: dict , overwrite: bool = False) -> Path:
     name = name.strip().lower()
-    if not is_valid_filename(name) or name.endswith("."):
+    if not name.isascii() or not is_valid_filename(name) or name.endswith("."):
         raise ValueError(f"Invalid name: {name!r}.")
 
     folder = get_user_jobs_dir()

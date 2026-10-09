@@ -1,10 +1,11 @@
-import json
 from importlib.resources import files
-from pathlib import Path
-from platformdirs import user_config_dir
-from pathvalidate import is_valid_filename
-import tempfile
+import json
 import os
+from pathlib import Path
+from pathvalidate import is_valid_filename
+from platformdirs import user_config_dir
+import tempfile
+import warnings
 
 JOB_EXTENSIONS = {"json" , "jsn"}
 
@@ -17,8 +18,16 @@ def _load_dir(folder) -> dict[str , dict]:
     out = {}
     for f in folder.iterdir():
         name , dot , ext = f.name.rpartition(".")
-        if dot and ext.lower() in JOB_EXTENSIONS:
+        if not (dot and ext.lower() in JOB_EXTENSIONS):
+            continue
+        key = name.lower()
+        if key in out:
+            warnings.warn(f"Skipping {f.name} as another file is already named {key!r}.")
+            continue
+        try:
             out[name] = json.loads(f.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError , UnicodeDecodeError) as e:
+            warnings.warn(f"Skipping {f.name}: not valid JSON with error {e}.")
     return out
 
 def get_default_jobs() -> dict[str , dict]:

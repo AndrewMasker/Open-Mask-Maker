@@ -4,12 +4,12 @@
         "type": "folded" ,
         "top": 
         [
-            [["top" , "copper"] , "opaque"]
+            ["top copper" , "opaque"]
         ] 
         ,
         "bottom": 
         [
-            [["bottom" , "copper"] , "opaque"]
+            ["bottom copper" , "opaque"]
         ]
     }
     ,
@@ -18,12 +18,12 @@
         "type": "folded" ,
         "top":
         [
-            [["top" , "mask"] , "clear"]
+            ["top mask" , "clear"]
         ]
         ,
         "bottom":
         [
-            [["bottom" , "mask"] , "clear"]
+            ["bottom mask" , "clear"]
         ]
     }
     ,
@@ -32,7 +32,7 @@
         "type": "single" , 
         "single":
         [
-            [["top" , "silk"] , "opaque"]
+            ["top silk" , "opaque"]
         ]
     }
 }
